@@ -6,23 +6,11 @@ import Publication from './Publication/Publication';
 import styles from './Reader.module.css';
 
 export default class Reader extends Component {
-  constructor() {
-    super();
-    this.state = {
-      page: 0,
-    };
-  }
+  state = { page: 0 };
 
-  onPageChange(inc) {
-    const { items } = this.props;
-
+  onPageChange({ target }) {
     this.setState(prevState => {
-      let page = prevState.page + inc;
-      if (page >= items.length) {
-        page = 0;
-      } else if (page < 0) {
-        page = items.length - 1;
-      }
+      const page = target.name === 'next' ? prevState.page + 1 : prevState.page - 1;
       return { page };
     });
   }
@@ -36,7 +24,7 @@ export default class Reader extends Component {
         <Controls
           items={items}
           page={page}
-          onPageChange={inc => this.onPageChange(inc)}
+          onPageChange={e => this.onPageChange(e)}
         />
         <Counter items={items} page={page} />
         <Publication items={items} page={page} />

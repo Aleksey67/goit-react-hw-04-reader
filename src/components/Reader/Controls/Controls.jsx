@@ -6,17 +6,19 @@ const Controls = ({ onPageChange, page, items }) => (
   <section className={styles.controls}>
     <button
       type="button"
-      disabled={page === 0}
+      name="back"
+      disabled={!page}
       className={styles.button}
-      onClick={() => onPageChange(-1)}
+      onClick={onPageChange}
     >
       Назад
     </button>
     <button
       type="button"
+      name="next"
       disabled={page === items.length - 1}
       className={styles.button}
-      onClick={() => onPageChange(1)}
+      onClick={onPageChange}
     >
       Вперед
     </button>
