@@ -9,10 +9,9 @@ export default class Reader extends Component {
   state = { page: 0 };
 
   onPageChange({ target }) {
-    this.setState(prevState => {
-      const page = target.name === 'next' ? prevState.page + 1 : prevState.page - 1;
-      return { page };
-    });
+    this.setState(prevState => ({
+      page: target.name === 'next' ? prevState.page + 1 : prevState.page - 1,
+    }));
   }
 
   render() {
