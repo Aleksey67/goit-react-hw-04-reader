@@ -3,20 +3,39 @@ import PropTypes from 'prop-types';
 import Controls from './Controls/Controls';
 import Counter from './Counter/Counter';
 import Publication from './Publication/Publication';
+import queryString from 'query-string';
 import styles from './Reader.module.css';
 
 export default class Reader extends Component {
-  state = { page: 0 };
+  componentDidMount() {
+    const queryParams = this.getQueryParams();
+    if (!queryParams.item) {
+      this.props.history.push({
+        pathname: '/reader',
+        search: 'item=1',
+      });
+    }
+  }
+
+  getQueryParams() {
+    return queryString.parse(this.props.location.search);
+  }
 
   onPageChange({ target }) {
-    this.setState(prevState => ({
-      page: target.name === 'next' ? prevState.page + 1 : prevState.page - 1,
-    }));
+    const queryParams = this.getQueryParams();
+    const item = parseInt(queryParams.item) + (target.name === 'next' ? 1 : -1);
+    this.props.history.push({
+      pathname: this.props.location.pathname,
+      search: `item=${item}`,
+    });
   }
 
   render() {
     const { items } = this.props;
-    const { page } = this.state;
+    let page = parseInt(this.getQueryParams().item) - 1;
+    if (isNaN(page)) {
+      page = 0;
+    }
 
     return (
       <div className={styles.reader}>
